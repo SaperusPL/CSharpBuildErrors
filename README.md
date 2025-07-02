@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # csharpbuilderrors README
 
 This is the README for your extension "csharpbuilderrors". After writing up a brief description, we recommend including the following sections.
@@ -69,3 +70,7 @@ You can author your README using Visual Studio Code. Here are some useful editor
 * [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 **Enjoy!**
+=======
+# CSharpBuildErrors
+VS Code plugin to easily view and navigate c# and probably other .NET languages build errors
+>>>>>>> 47868c34b43234bf02c1fc6e081ef34ad4ab6616
