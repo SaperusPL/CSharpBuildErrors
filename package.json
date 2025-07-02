@@ -12,10 +12,33 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "build-errors-container",
+          "title": "Build Errors",
+          "icon": "$(beaker)"
+        }
+      ]
+    },
+    "views": {
+      "build-errors-container": [
+        {
+          "id": "build-errors.filtersView",
+          "name": "Filtry",
+          "type": "webview"
+        },
+        {
+          "id": "build-errors.problemsView",
+          "name": "Problemy",
+          "type": "tree"
+        }
+      ]
+    },
     "commands": [
       {
-        "command": "csharpbuilderrors.helloWorld",
-        "title": "Hello World"
+        "command": "csharp-build-errors.navigateToError",
+        "title": "Nawiguj do błędu"
       }
     ]
   },

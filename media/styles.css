@@ -1,0 +1,54 @@
+body {
+    padding: 0;
+    font-family: var(--vscode-font-family);
+    font-weight: var(--vscode-font-weight);
+    font-size: var(--vscode-font-size);
+    color: var(--vscode-editor-foreground);
+    background-color: var(--vscode-side-bar-background);
+}
+
+.controls-container {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    gap: 8px;
+}
+
+.control-button {
+    background-color: var(--vscode-button-secondary-background);
+    color: var(--vscode-button-secondary-foreground);
+    border: 1px solid var(--vscode-button-border, transparent);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    flex-grow: 1;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.control-button.active {
+    border-color: var(--vscode-focus-border);
+}
+
+.control-button:hover {
+    background-color: var(--vscode-button-secondary-hover-background);
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    width: 24px;
+    height: 24px;
+    color: var(--vscode-icon-foreground);
+}
+
+.icon-button:hover {
+    background-color: var(--vscode-toolbar-hover-background);
+}
+
+.codicon {
+    font-family: "codicon";
+    font-size: 16px;
+} 

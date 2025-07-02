@@ -5,7 +5,6 @@ Jesteś doświadczonym menedżerem produktu, którego zadaniem jest stworzenie k
 </project_description>
 
 <project_details>
-@onboarding.md
 @prd-summary.md
 </project_details>
 

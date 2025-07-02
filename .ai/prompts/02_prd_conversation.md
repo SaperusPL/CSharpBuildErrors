@@ -4,7 +4,6 @@ Prosimy o uważne zapoznanie się z poniższymi informacjami:
 
 <project_description>
 @mvp.md
-@onboarding.md
 </project_description>
 
 Przeanalizuj dostarczone informacje, koncentrując się na aspektach istotnych dla tworzenia PRD. Rozważ następujące kwestie:
