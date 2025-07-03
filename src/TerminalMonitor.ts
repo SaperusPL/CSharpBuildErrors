@@ -1,33 +1,39 @@
 import * as vscode from 'vscode';
 
-export class TerminalMonitor {
+export class TerminalMonitor implements vscode.Disposable {
     private _onBuildOutput = new vscode.EventEmitter<string>();
     readonly onBuildOutput = this._onBuildOutput.event;
+    
     private buffer = '';
     private listener: vscode.Disposable;
+    private timer: NodeJS.Timeout | undefined;
 
     constructor() {
-        // HACK: There's a persistent linter/type issue where `onDidWriteTerminalData` is not recognized
-        // on `vscode.window`, even though it's a valid part of the API.
-        // Using @ts-ignore to suppress the error and allow compilation.
         // @ts-ignore
         this.listener = vscode.window.onDidWriteTerminalData((e: any) => {
-            const data = e.data;
-            this.buffer += data;
+            this.buffer += e.data;
 
-            // This is a simple heuristic to detect the end of a `dotnet build`.
-            // It might not be foolproof for all cases, especially with complex build outputs
-            // or concurrent builds, but it covers the most common scenarios.
-            if (data.includes('Build FAILED.') || data.includes('Build succeeded.')) {
-                if (this.buffer.includes('MSBuild version') || this.buffer.includes('Determining projects to restore...')) {
-                    this._onBuildOutput.fire(this.buffer);
-                }
-                this.buffer = '';
+            if (this.timer) {
+                clearTimeout(this.timer);
             }
+
+            this.timer = setTimeout(() => {
+                // Strip ANSI color codes from the buffer before processing
+                const cleanBuffer = this.buffer.replace(/[\u001b\u009b][[()#;?]*.{0,2}?[0-9]*[; Zabcd"fmnglrh]?/g, '');
+
+                // Only process buffer if it seems to contain C# build output.
+                if (cleanBuffer.includes(': warning CS') || cleanBuffer.includes(': error CS')) {
+                    this._onBuildOutput.fire(cleanBuffer);
+                }
+                this.buffer = ''; // Clear buffer after processing
+            }, 1000); // Wait for 1s of silence before processing
         });
     }
 
     dispose() {
+        if (this.timer) {
+            clearTimeout(this.timer);
+        }
         this.listener.dispose();
         this._onBuildOutput.dispose();
     }

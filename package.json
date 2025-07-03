@@ -3,17 +3,24 @@
   "displayName": "CSharpBuildErrors",
   "description": "VS Code plugin to easily view and navigate c# build errors",
   "version": "0.0.1",
+  "publisher": "undefined_publisher",
   "engines": {
     "vscode": "^1.101.0"
   },
+  "enabledApiProposals": [
+    "terminalDataWriteEvent"
+  ],
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:build-errors.problemsView",
+    "onView:build-errors.filtersView"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "viewsContainers": {
-      "activitybar": [
+      "panel": [
         {
           "id": "build-errors-container",
           "title": "Build Errors",
@@ -23,11 +30,6 @@
     },
     "views": {
       "build-errors-container": [
-        {
-          "id": "build-errors.filtersView",
-          "name": "Filtry",
-          "type": "webview"
-        },
         {
           "id": "build-errors.problemsView",
           "name": "Problemy",
@@ -39,8 +41,42 @@
       {
         "command": "csharp-build-errors.navigateToError",
         "title": "Nawiguj do błędu"
+      },
+      {
+        "command": "csharp-build-errors.toggleErrors",
+        "title": "Pokaż błędy",
+        "icon": "$(error)"
+      },
+      {
+        "command": "csharp-build-errors.toggleWarnings",
+        "title": "Pokaż ostrzeżenia",
+        "icon": "$(warning)"
+      },
+      {
+        "command": "csharp-build-errors.clear",
+        "title": "Wyczyść",
+        "icon": "$(trash)"
       }
-    ]
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "csharp-build-errors.toggleErrors",
+          "when": "view == build-errors.problemsView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "csharp-build-errors.toggleWarnings",
+          "when": "view == build-errors.problemsView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "csharp-build-errors.clear",
+          "when": "view == build-errors.problemsView",
+          "group": "navigation@3"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -59,6 +95,7 @@
     "eslint": "^9.25.1",
     "typescript": "^5.8.3",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/codicons": "^0.0.36"
   }
 }

@@ -31,7 +31,12 @@ export class ProblemsTreeProvider implements vscode.TreeDataProvider<TreeItem> {
         if (element) {
             // Child nodes (problems in a file)
             if (element instanceof FileTreeItem) {
-                const problemsInFile = problems.filter(p => p.filePath === element.resourceUri?.fsPath);
+                const elementPath = element.resourceUri?.fsPath;
+                if (!elementPath) { return Promise.resolve([]); }
+
+                // Normalize paths for case-insensitive comparison.
+                const problemsInFile = problems.filter(p => p.filePath.toLowerCase() === elementPath.toLowerCase());
+                
                 return Promise.resolve(
                     problemsInFile
                         .sort((a, b) => a.line - b.line)
@@ -64,14 +69,10 @@ class FileTreeItem extends vscode.TreeItem {
     constructor(
         public readonly resourceUri: vscode.Uri,
     ) {
-        super(resourceUri);
-        const workspaceFolder = vscode.workspace.getWorkspaceFolder(resourceUri);
-        if (workspaceFolder) {
-            this.label = path.relative(workspaceFolder.uri.fsPath, resourceUri.fsPath);
-        } else {
-            this.label = resourceUri.fsPath;
-        }
-        this.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+        // Pass the resource URI directly to the parent constructor.
+        // This lets VS Code handle creating the label, which is more robust
+        // and should fix the path corruption issue.
+        super(resourceUri, vscode.TreeItemCollapsibleState.Expanded);
     }
 }
 
